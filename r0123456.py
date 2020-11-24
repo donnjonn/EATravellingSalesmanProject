@@ -26,14 +26,17 @@ class r0123456:
 		print("parent1: ", testind1.perm)
 		print("parent2: ", testind2.perm)
 		self.recombination(testind1, testind2)
-
+		minfitness = 0
 		i = 0
 		while(i < amountOfiterations):
 			# calc ifitnesses
 			fitnesses = []
 			for ind in individuals:
 				fitnesses.append(self.fitness(ind))
-			print("# {}: Best fitness: {}  |  Mean fitness: {}".format(i, min(fitnesses), mean(fitnesses)))
+			
+			if min(fitnesses) < minfitness or i == 0:
+				minfitness = min(fitnesses)
+			print("# {}: Best fitness: {}  |  Mean fitness: {} | Best fitness overall: {}".format(i, min(fitnesses), mean(fitnesses), minfitness))
 
 			offspring = []
 			for j in range(self.lam):
@@ -42,9 +45,11 @@ class r0123456:
 				offs = self.recombination(p1, p2)
 				self.mutate(offs)
 				offspring.append(offs)
-
-			#self.elimination()
-			individuals = offspring
+			newpop = []
+			for j in range(self.lam):
+				newpop.append(self.elimination(individuals, offspring))
+			print(len(newpop))
+			individuals = newpop
 
 
 
@@ -79,8 +84,8 @@ class r0123456:
 		return individuals
 
 	def mutate(self, ind):
-		r1 = random.randint(0, 28)
-		r2 = random.randint(0, 28)
+		r1 = random.randint(0, amountOfVertices-1)
+		r2 = random.randint(0, amountOfVertices-1)
 		temp = ind.perm[r1]
 		ind.perm[r1] = ind.perm[r2]
 		ind.perm[r2] = temp
@@ -92,8 +97,8 @@ class r0123456:
 		i1 = 0
 		i2 = 0
 		while i1 >= i2:
-			i1 = random.randint(0, 28)
-			i2 = random.randint(0, 28)
+			i1 = random.randint(0, amountOfVertices-1)
+			i2 = random.randint(0, amountOfVertices-1)
 		offspring.perm[i1:i2] = p1.perm[i1:i2]
 
 		for i in range(len(p2.perm[i1:i2])):
@@ -122,8 +127,13 @@ class r0123456:
 		index = fitnesses.index(min(fitnesses))
 		return selected[index]
 
-	def elimination(self):
-		return 0
+	def elimination(self, parents, offspring):
+		totalpop = parents + offspring
+		k = 5
+		selected = random.sample(totalpop, k)
+		fitnesses = list(map(lambda x : self.fitness(x), selected))
+		index = fitnesses.index(min(fitnesses))
+		return selected[index]
 
 	# Helperfunctions
 	def pathExists(self, ind):
@@ -144,7 +154,7 @@ amountOfVertices = 29
 # Probability to mutate
 alpha = 0.05
 
-amountOfiterations = 500
+amountOfiterations = 3000
 
 
 # Initializations
