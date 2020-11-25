@@ -10,7 +10,7 @@ np.random.seed(30)
 class r0123456:
 
     def __init__(self):
-        self.reporter = Reporter.Reporter(self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(lam) + '_alpha=' + str(alpha) + '_k=' + str(k) + '_k_elim=' + str(k_elimination) + '_' + file)
+        self.reporter = Reporter.Reporter(self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(lam) + '_alpha=' + str(alpha) + '_k=' + str(k) + '_' + file)
         self.lam = lam
         self.distanceMatrix = []
         self.listMeans = []
@@ -186,16 +186,16 @@ class Individual:
 # Executed code starts here
 # Parameters
 amountOfVertices = 29
-lam = 100
+lam = 500
 # Probability to mutate
-alpha = 0.5
+alpha = 0.2
 
 amountOfiterations = 3000
 
 k = 5
 k_elimination = 5
 
-stopIteratingAfter = 200
+stopIteratingAfter = 500
 
 
 
