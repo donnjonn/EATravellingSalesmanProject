@@ -14,7 +14,7 @@ class r0123456:
         self.stopIter = 0
 
     # The evolutionary algorithm's main loop
-    def optimize(self, filename):
+    def optimize(self, filename, k):
         # Read distance matrix from file.		
         file = open(filename)
         self.distanceMatrix = np.loadtxt(file, delimiter=",")
@@ -52,8 +52,8 @@ class r0123456:
                 self.stopIter = 0
             offspring = []
             for j in range(self.lam):
-                p1 = self.selection(individuals)
-                p2 = self.selection(individuals)
+                p1 = self.selection(individuals, k)
+                p2 = self.selection(individuals, k)
                 offs = self.recombination(p1, p2)
                 if random.uniform(0, 1) < 0.05:
                     self.mutate(offs)
@@ -132,9 +132,8 @@ class r0123456:
                 offspring.perm[i] = p2.perm[i]
         return offspring
 
-    def selection(self, individuals):
+    def selection(self, individuals, k):
         # k-tournament selection
-        k = 5
         selected = random.sample(individuals, k)
         fitnesses = list(map(lambda x : self.fitness(x), selected))
         index = fitnesses.index(min(fitnesses))
@@ -168,8 +167,8 @@ amountOfVertices = 29
 alpha = 0.05
 
 amountOfiterations = 3000
-
+k = 5
 
 # Initializations
 student = r0123456()
-student.optimize("tour29.csv")
+student.optimize("tour194.csv", k)
