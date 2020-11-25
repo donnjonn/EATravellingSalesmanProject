@@ -167,6 +167,7 @@ amountOfVertices = 29
 alpha = 0.05
 
 amountOfiterations = 3000
+b=5
 k = 5
 
 # Initializations
