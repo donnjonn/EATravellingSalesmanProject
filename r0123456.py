@@ -9,9 +9,11 @@ np.random.seed(30)
 # Modify the class name to match your student number.
 class r0123456:
 
-    def __init__(self):
-        self.reporter = Reporter.Reporter(self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(lam) + '_alpha=' + str(alpha) + '_k=' + str(k) + '_' + file)
-        self.lam = lam
+    def __init__(self, params):
+        self.reporter = Reporter.Reporter("grid_search_results/" + self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(params["lam"]) + '_alpha=' + str(params["alpha"]) + '_k=' + str(params["k"]) + '_' + file)
+        self.lam = params["lam"]
+        self.alpha = params["alpha"]
+        self.k = params["k"]
         self.distanceMatrix = []
         self.listMeans = []
         self.stopIter = 0
@@ -26,11 +28,11 @@ class r0123456:
         # Your code here.
         individuals = self.initialize()
 
-        testind1 = individuals[0]
-        testind2 = individuals[1]
-        print("parent1: ", testind1.perm)
-        print("parent2: ", testind2.perm)
-        self.recombination(testind1, testind2)
+        #testind1 = individuals[0]
+        #testind2 = individuals[1]
+        #print("parent1: ", testind1.perm)
+        #print("parent2: ", testind2.perm)
+        #self.recombination(testind1, testind2)
         bestOverall = 0
         bestObjective = 0
         meanObjective = 0
@@ -58,7 +60,7 @@ class r0123456:
                 p1 = self.selection(individuals)
                 p2 = self.selection(individuals)
                 offs = self.recombination(p1, p2)
-                if random.uniform(0, 1) < alpha:
+                if random.uniform(0, 1) < self.alpha:
                     self.mutate(offs)
                 offspring.append(offs)
             newpop = []
@@ -80,6 +82,9 @@ class r0123456:
 
             if timeLeft < 0:
                 break
+
+            if i == amountOfiterations:
+                print("Reached maximum amount of iterations ({})".format(amountOfiterations))
 
             i += 1
         # Your code here.
@@ -139,7 +144,7 @@ class r0123456:
 
     def selection(self, individuals):
         # k-tournament selection
-        selected = random.sample(individuals, k)
+        selected = random.sample(individuals, self.k)
         fitnesses = list(map(lambda x : self.fitness(x), selected))
         index = fitnesses.index(min(fitnesses))
         return selected[index]
@@ -186,25 +191,40 @@ class Individual:
 # Executed code starts here
 # Parameters
 amountOfVertices = 29
-lam = 500
+#lam = 100
 # Probability to mutate
-alpha = 0.2
-
-amountOfiterations = 3000
-
-k = 5
-k_elimination = 5
-
-stopIteratingAfter = 500
+#alpha = 0.2
+#k = 5
 
 
 
+
+
+
+#params = {"lam":100, "alpha":0.01, "k": 1}
 # Initializations
 file = 'tour29'
-student = r0123456()
-student.optimize(file + '.csv')
+#student = r0123456(params)
+#student.optimize(file + '.csv')
+
+#test_experiments = [{"lam":100, "alpha":0.01, "k": 1},{"lam":100, "alpha":0.01, "k": 2}]
+
+amountOfiterations = 3000
+stopIteratingAfter = 500
+k_elimination = 5
+gs_lam = [500]
+gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25]
+gs_k = [1, 2, 3, 4, 5, 6, 10]
 
 experiments = []
+for l in gs_lam:
+    for a in gs_alpha:
+        for k in gs_k:
+            experiments.append({"lam":l, "alpha":a, "k":k})
+
+for e in experiments:
+    student = r0123456(e)
+    student.optimize(file + '.csv')
 
 # Parameter suggestions:
 #   PMX length of subset of one of the parents
