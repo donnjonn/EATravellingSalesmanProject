@@ -10,8 +10,8 @@ np.random.seed(30)
 class r0123456:
 
     def __init__(self):
-        self.reporter = Reporter.Reporter(self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_alpha=' + str(alpha) + '_k=' + str(k) + '_' + file)
-        self.lam = 100
+        self.reporter = Reporter.Reporter(self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(lam) + '_alpha=' + str(alpha) + '_k=' + str(k) + '_k_elim=' + str(k_elimination) + '_' + file)
+        self.lam = lam
         self.distanceMatrix = []
         self.listMeans = []
         self.stopIter = 0
@@ -146,8 +146,7 @@ class r0123456:
 
     def elimination(self, parents, offspring):
         totalpop = parents + offspring
-        k = 5
-        selected = random.sample(totalpop, k)
+        selected = random.sample(totalpop, k_elimination)
         fitnesses = list(map(lambda x : self.fitness(x), selected))
         index = fitnesses.index(min(fitnesses))
         return selected[index]
@@ -187,12 +186,14 @@ class Individual:
 # Executed code starts here
 # Parameters
 amountOfVertices = 29
+lam = 100
 # Probability to mutate
-alpha = 0.05
+alpha = 0.5
 
 amountOfiterations = 3000
 
 k = 5
+k_elimination = 5
 
 stopIteratingAfter = 200
 
@@ -205,4 +206,15 @@ student.optimize(file + '.csv')
 
 experiments = []
 
-# alpha = 0.01 0.05 0.1 0.5
+# Parameter suggestions:
+#   PMX length of subset of one of the parents
+
+# Experiments=
+# lam   = 50 100 200 300 400 500 600 1000 (500 best)
+# alpha = 0.01 0.05 0.1 0.5 (0.05)
+# k     = 5 10 20
+#
+
+# with lam 500:
+# alpha 0.01 0.025 0.05 0.075 0.1 (0.1 best)
+# k 5 10
