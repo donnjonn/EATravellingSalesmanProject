@@ -60,6 +60,7 @@ class r0123456:
                 offspring.append(offs)
             newpop = []
             for j in range(self.lam):
+                #newpop.append(self.elimination_select_half_best(individuals, offspring, self.distanceMatrix))
                 newpop.append(self.elimination(individuals, offspring))
             #print(len(newpop))
             individuals = newpop
@@ -147,6 +148,25 @@ class r0123456:
         index = fitnesses.index(min(fitnesses))
         return selected[index]
 
+
+    def elimination_select_half_best(self, parents, offsprings, distanceMatrix):
+
+        totalPop = parents + offsprings
+
+        dtype = [('index', int), ('length', float)]
+
+        fitnesses = np.array([ (i , self.length(ind, distanceMatrix)) for i, ind in enumerate(totalPop) ], dtype=dtype)
+
+        sortedd = np.sort(fitnesses, order='length')
+        
+
+        retour = [totalPop[ele[0]] for i, ele in enumerate(sortedd) if i<len(parents)]
+
+        return retour
+
+
+
+
     # Helperfunctions
     def pathExists(self, ind):
         # To check if path is legit (later)
@@ -167,7 +187,7 @@ amountOfVertices = 29
 alpha = 0.05
 
 amountOfiterations = 3000
-b=5
+
 k = 5
 
 # Initializations
