@@ -49,7 +49,8 @@ class r0123456:
                 p1 = self.selection(individuals)
                 p2 = self.selection(individuals)
                 offs = self.recombination(p1, p2)
-                self.mutate(offs)
+                if random.uniform(0, 1) < 0.05:
+                    self.mutate(offs)
                 offspring.append(offs)
             newpop = []
             for j in range(self.lam):
