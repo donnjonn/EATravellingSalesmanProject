@@ -3,18 +3,21 @@ import numpy as np
 from numpy import mean
 import random
 
+random.seed(30)
+np.random.seed(30)
+
 # Modify the class name to match your student number.
 class r0123456:
 
     def __init__(self):
-        self.reporter = Reporter.Reporter(self.__class__.__name__)
+        self.reporter = Reporter.Reporter(self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_alpha=' + str(alpha) + '_k=' + str(k) + '_' + file)
         self.lam = 100
         self.distanceMatrix = []
         self.listMeans = []
         self.stopIter = 0
 
     # The evolutionary algorithm's main loop
-    def optimize(self, filename, k):
+    def optimize(self, filename):
         # Read distance matrix from file.		
         file = open(filename)
         self.distanceMatrix = np.loadtxt(file, delimiter=",")
@@ -32,7 +35,7 @@ class r0123456:
         bestObjective = 0
         meanObjective = 0
         i = 0
-        while(i < amountOfiterations and self.stopIter <= 200):
+        while(i < amountOfiterations and self.stopIter <= stopIteratingAfter):
             index = 0
             # calc ifitnesses
             fitnesses = []
@@ -45,17 +48,17 @@ class r0123456:
             self.listMeans.append(meanObjective)
             if bestObjective < bestOverall or i == 0:
                 bestOverall = bestObjective
-            print(round(self.listMeans[-1], 0), self.stopIter)
+            #print(round(self.listMeans[-1], 0), self.stopIter)
             if (i != 0 and round(self.listMeans[-1], 0) == round(self.listMeans[-2], 0)):
                 self.stopIter += 1
             else:
                 self.stopIter = 0
             offspring = []
             for j in range(self.lam):
-                p1 = self.selection(individuals, k)
-                p2 = self.selection(individuals, k)
+                p1 = self.selection(individuals)
+                p2 = self.selection(individuals)
                 offs = self.recombination(p1, p2)
-                if random.uniform(0, 1) < 0.05:
+                if random.uniform(0, 1) < alpha:
                     self.mutate(offs)
                 offspring.append(offs)
             newpop = []
@@ -69,9 +72,10 @@ class r0123456:
             #  - a 1D numpy array in the cycle notation containing the best solution 
             #    with city numbering starting from 0
             timeLeft = self.reporter.report(meanObjective, bestObjective, bestSolution)
-            #print("# {}: Best fitness: {:.10f}  |  Mean fitness: {:.10f} | Best fitness overall: {:.10f} | Time left: {}".format(i, bestObjective, meanObjective, bestOverall, timeLeft))
+            print("# {}: Best fitness: {:.10f}  |  Mean fitness: {:.10f} | Best fitness overall: {:.10f} | Time left: {}".format(i, bestObjective, meanObjective, bestOverall, timeLeft))
             
-            stopIterating = 0
+            if self.stopIter == stopIteratingAfter:
+                print("Stopped iterating after {} of the same mean fitness value".format(stopIteratingAfter))
 
             if timeLeft < 0:
                 break
@@ -132,7 +136,7 @@ class r0123456:
                 offspring.perm[i] = p2.perm[i]
         return offspring
 
-    def selection(self, individuals, k):
+    def selection(self, individuals):
         # k-tournament selection
         selected = random.sample(individuals, k)
         fitnesses = list(map(lambda x : self.fitness(x), selected))
@@ -170,6 +174,15 @@ amountOfiterations = 3000
 b=5
 k = 5
 
+stopIteratingAfter = 200
+
+
+
 # Initializations
+file = 'tour29'
 student = r0123456()
-student.optimize("tour194.csv", k)
+student.optimize(file + '.csv')
+
+experiments = []
+
+# alpha = 0.01 0.05 0.1 0.5
