@@ -10,6 +10,8 @@ class r0123456:
         self.reporter = Reporter.Reporter(self.__class__.__name__)
         self.lam = 100
         self.distanceMatrix = []
+        self.listMeans = []
+        self.stopIter = 0
 
     # The evolutionary algorithm's main loop
     def optimize(self, filename):
@@ -30,7 +32,7 @@ class r0123456:
         bestObjective = 0
         meanObjective = 0
         i = 0
-        while(i < amountOfiterations):
+        while(i < amountOfiterations and self.stopIter <= 200):
             index = 0
             # calc ifitnesses
             fitnesses = []
@@ -40,10 +42,14 @@ class r0123456:
             index = fitnesses.index(bestObjective)
             bestSolution = np.array(individuals[index].perm)
             meanObjective = np.mean(fitnesses)
+            self.listMeans.append(meanObjective)
             if bestObjective < bestOverall or i == 0:
                 bestOverall = bestObjective
-            
-
+            print(round(self.listMeans[-1], 0), self.stopIter)
+            if (i != 0 and round(self.listMeans[-1], 0) == round(self.listMeans[-2], 0)):
+                self.stopIter += 1
+            else:
+                self.stopIter = 0
             offspring = []
             for j in range(self.lam):
                 p1 = self.selection(individuals)
@@ -57,17 +63,16 @@ class r0123456:
                 newpop.append(self.elimination(individuals, offspring))
             #print(len(newpop))
             individuals = newpop
-
-
-
-
             # Call the reporter with:
             #  - the mean objective function value of the population
             #  - the best objective function value of the population
             #  - a 1D numpy array in the cycle notation containing the best solution 
             #    with city numbering starting from 0
             timeLeft = self.reporter.report(meanObjective, bestObjective, bestSolution)
-            print("# {}: Best fitness: {:.10f}  |  Mean fitness: {:.10f} | Best fitness overall: {:.10f} | Time left: {}".format(i, bestObjective, meanObjective, bestOverall, timeLeft))
+            #print("# {}: Best fitness: {:.10f}  |  Mean fitness: {:.10f} | Best fitness overall: {:.10f} | Time left: {}".format(i, bestObjective, meanObjective, bestOverall, timeLeft))
+            
+            stopIterating = 0
+
             if timeLeft < 0:
                 break
 
@@ -158,7 +163,7 @@ class Individual:
 
 # Executed code starts here
 # Parameters
-amountOfVertices = 194
+amountOfVertices = 29
 # Probability to mutate
 alpha = 0.05
 
@@ -167,4 +172,4 @@ amountOfiterations = 3000
 
 # Initializations
 student = r0123456()
-student.optimize("tour194.csv")
+student.optimize("tour29.csv")
