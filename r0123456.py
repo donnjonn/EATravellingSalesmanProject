@@ -221,12 +221,12 @@ optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300
 amountOfiterations = 4000
 stopIteratingAfter = 300
 k_elimination = 5
-gs_lam = [50, 100]
+gs_lam = [100]
 #gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
 #gs_k = [1, 2, 3, 4, 5, 6, 10]
 
-gs_alpha = [0.04]
-gs_k = [4]
+gs_alpha = [0.01, 0.02, 0.03, 0.04, 0.05, 0.1]
+gs_k = [2, 3, 4, 5]
 
 
 

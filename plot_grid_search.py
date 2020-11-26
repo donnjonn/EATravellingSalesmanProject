@@ -19,7 +19,7 @@ if show_iteration_plots:
     #gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
     #gs_k = [1, 2, 3, 4, 5, 6, 10]
 
-    amountOfiterations = 3000
+    amountOfiterations = 4000
     stopIteratingAfter = 300
     k_elimination = 5
     gs_lam = [50, 75, 100, 200, 500, 600]
@@ -58,23 +58,26 @@ if show_iteration_plots:
             x = []
             y = []
             file_length = 0
-            with open(filename, 'r') as csvfile:
-                plots = csv.reader(csvfile, delimiter=',')
-                count = 0
-                for row in plots:
-                    if count < 2:
+            try:
+                with open(filename, 'r') as csvfile:
+                    plots = csv.reader(csvfile, delimiter=',')
+                    count = 0
+                    for row in plots:
+                        if count < 2:
+                            count += 1
+                            continue
                         count += 1
-                        continue
-                    count += 1
-                    # print(row[0])
-                    x.append(float(row[0]))
-                    y.append(float(row[2]))
-            print("{} {}".format(lam, y[-1]))
-            plt.plot(x, y, label='lambda=' + str(lam))
-            plt.xlabel('iterations')
-            plt.ylabel('mean fitness')
-            plt.title(file + ': Mean fitness vs iterations\nalpha={} k={}'.format(alpha, k))
-            plt.legend()
+                        # print(row[0])
+                        x.append(float(row[0]))
+                        y.append(float(row[2]))
+                print("{} {}".format(lam, y[-1]))
+                plt.plot(x, y, label='lambda=' + str(lam))
+                plt.xlabel('iterations')
+                plt.ylabel('mean fitness')
+                plt.title(file + ': Mean fitness vs iterations\nalpha={} k={}'.format(alpha, k))
+                plt.legend()
+            except:
+                print("File not found, skipping...")
 
         #plt.figure()
 
@@ -87,22 +90,25 @@ if show_iteration_plots:
             x= []
             y= []
             file_length = 0
-            with open(filename,'r') as csvfile:
-                plots = csv.reader(csvfile, delimiter=',')
-                count = 0
-                for row in plots:
-                    if count < 2:
+            try:
+                with open(filename,'r') as csvfile:
+                    plots = csv.reader(csvfile, delimiter=',')
+                    count = 0
+                    for row in plots:
+                        if count < 2:
+                            count += 1
+                            continue
                         count += 1
-                        continue
-                    count += 1
-                    #print(row[0])
-                    x.append(float(row[0]))
-                    y.append(float(row[2]))
-            plt.plot(x,y, label='alpha='+str(alpha))
-            plt.xlabel('iterations')
-            plt.ylabel('mean fitness')
-            plt.title(file + ': Mean fitness vs iterations\nlambda={} k={}'.format(lam, k))
-            plt.legend()
+                        #print(row[0])
+                        x.append(float(row[0]))
+                        y.append(float(row[2]))
+                plt.plot(x,y, label='alpha='+str(alpha))
+                plt.xlabel('iterations')
+                plt.ylabel('mean fitness')
+                plt.title(file + ': Mean fitness vs iterations\nlambda={} k={}'.format(lam, k))
+                plt.legend()
+            except:
+                print("File not found, skipping...")
 
         plt.figure()
 
@@ -114,22 +120,25 @@ if show_iteration_plots:
             filename = filename_blueprint.format(str(amountOfiterations), str(stopIteratingAfter), str(lam), str(alpha), str(k))
             x= []
             y= []
-            with open(filename,'r') as csvfile:
-                plots = csv.reader(csvfile, delimiter=',')
-                count = 0
-                for row in plots:
-                    if count < 2:
+            try:
+                with open(filename,'r') as csvfile:
+                    plots = csv.reader(csvfile, delimiter=',')
+                    count = 0
+                    for row in plots:
+                        if count < 2:
+                            count += 1
+                            continue
                         count += 1
-                        continue
-                    count += 1
-                    #print(row[0])
-                    x.append(float(row[0]))
-                    y.append(float(row[2]))
-            plt.plot(x,y, label='k='+str(k))
-            plt.xlabel('iterations')
-            plt.ylabel('mean fitness')
-            plt.title(file + ': Mean fitness vs iterations\nlambda={} alpha={}'.format(lam, alpha))
-            plt.legend()
+                        #print(row[0])
+                        x.append(float(row[0]))
+                        y.append(float(row[2]))
+                plt.plot(x,y, label='k='+str(k))
+                plt.xlabel('iterations')
+                plt.ylabel('mean fitness')
+                plt.title(file + ': Mean fitness vs iterations\nlambda={} alpha={}'.format(lam, alpha))
+                plt.legend()
+            except:
+                print("File not found, skipping...")
 
     plt.show()
 
