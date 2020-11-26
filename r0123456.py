@@ -10,12 +10,12 @@ np.random.seed(30)
 class r0123456:
 
     def __init__(self, params):
-        self.reporter = Reporter.Reporter("grid_search_results/" + self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(params["lam"]) + '_alpha=' + str(params["alpha"]) + '_k=' + str(params["k"]) + '_' + file)
+        self.reporter = Reporter.Reporter("grid_search_results/" + file + "/" + self.__class__.__name__ + 'iter=' + str(amountOfiterations) + '_stopcrit' + str(stopIteratingAfter) + '_lambda=' + str(params["lam"]) + '_alpha=' + str(params["alpha"]) + '_k=' + str(params["k"]) + '_' + file)
         self.lam = params["lam"]
         self.alpha = params["alpha"]
         self.k = params["k"]
         self.distanceMatrix = []
-        self.listMeans = []
+        self.listMeans = np.zeros(shape=(amountOfiterations))
         self.stopIter = 0
 
     # The evolutionary algorithm's main loop
@@ -28,16 +28,16 @@ class r0123456:
         # Your code here.
         individuals = self.initialize()
 
-        testind1 = individuals[0]
-        testind2 = individuals[1]
+        #testind1 = individuals[0]
+        #testind2 = individuals[1]
 
         #self.pathLegit(testind1)
         #print("parent1: ", testind1.perm)
         #print("parent2: ", testind2.perm)
         #self.recombination(testind1, testind2)
         bestOverall = 0
-        bestObjective = 0
-        meanObjective = 0
+        #bestObjective = 0
+        #meanObjective = 0
         i = 0
 
         # "or" part explanation: 
@@ -45,30 +45,29 @@ class r0123456:
         #            ELSE (if optimum_reference given), we compare this value with the current meanObjective (and return True if meanObjective <= optimum_reference)
         while( i < amountOfiterations and (self.stopIter <= stopIteratingAfter or ( True if optimum == None else (False if int(meanObjective) <= int(optimum) else True)) )):
             index = 0
-            # calc ifitnesses
-            fitnesses = []
-            for ind in individuals:
-                fitnesses.append(self.fitness(ind))
-            bestObjective = min(fitnesses)
-            index = fitnesses.index(bestObjective)
+            # calc fitnesses
+            fitnesses = np.zeros(shape=(self.lam))
+            for k in range(len(individuals)):
+                fitnesses[k] = self.fitness(individuals[k])
+            bestObjective = np.amin(fitnesses)
+            index = np.argmin(fitnesses)
             bestSolution = np.array(individuals[index].perm)
             meanObjective = np.mean(fitnesses)
-            self.listMeans.append(meanObjective)
+            self.listMeans[i] = meanObjective
             if bestObjective < bestOverall or i == 0:
                 bestOverall = bestObjective
-            #print(round(self.listMeans[-1], 0), self.stopIter)
-            if (i != 0 and round(self.listMeans[-1], 0) == round(self.listMeans[-2], 0)):
+            if (i != 0 and round(self.listMeans[i], 0) == round(self.listMeans[i-1], 0)):
                 self.stopIter += 1
             else:
                 self.stopIter = 0
-            offspring = []
+            offspring = [None] * self.lam
             for j in range(self.lam):
                 p1 = self.selection(individuals)
                 p2 = self.selection(individuals)
                 offs = self.recombination(p1, p2)
                 if random.uniform(0, 1) < self.alpha:
                     self.mutate(offs)
-                offspring.append(offs)
+                offspring[j] = offs
             newpop = []
             for j in range(self.lam):
                 #newpop.append(self.elimination_select_half_best(individuals, offspring, self.distanceMatrix))
@@ -81,7 +80,7 @@ class r0123456:
             #  - a 1D numpy array in the cycle notation containing the best solution 
             #    with city numbering starting from 0
             timeLeft = self.reporter.report(meanObjective, bestObjective, bestSolution)
-            print("# {}: Best fitness: {:.10f}  |  Mean fitness: {:.10f} | Best fitness overall: {:.10f} | Time left: {}".format(i, bestObjective, meanObjective, bestOverall, timeLeft))
+            print("{}/{}: # {}: Best fitness: {:.10f}  |  Mean fitness: {:.10f} | Best fitness overall: {:.10f} | Time left: {}".format(exp_counter, total_experiments, i, bestObjective, meanObjective, bestOverall, timeLeft))
             
             if self.stopIter == stopIteratingAfter:
                 print("Stopped iterating after {} of the same mean fitness value".format(stopIteratingAfter))
@@ -203,7 +202,7 @@ class Individual:
 
 # Executed code starts here
 # Parameters
-amountOfVertices = 29
+amountOfVertices = 194
 #lam = 100
 # Probability to mutate
 #alpha = 0.2
@@ -212,24 +211,25 @@ amountOfVertices = 29
 
 
 
-#params = {"lam":100, "alpha":0.01, "k": 1}
-# Initializations
-file = 'tour29'
-#student = r0123456(params)
-#student.optimize(file + '.csv')
+
+
+
 
 #test_experiments = [{"lam":100, "alpha":0.01, "k": 1},{"lam":100, "alpha":0.01, "k": 2}]
 
 optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300}
-amountOfiterations = 3000
-stopIteratingAfter = 500
+amountOfiterations = 4000
+stopIteratingAfter = 300
 k_elimination = 5
-gs_lam = [500]
+gs_lam = [50, 100]
 #gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
 #gs_k = [1, 2, 3, 4, 5, 6, 10]
 
-gs_alpha = [0.02, 0.03, 0.04, 0.06, 0.08]
-gs_k = [2]
+gs_alpha = [0.04]
+gs_k = [4]
+
+
+
 
 experiments = []
 for l in gs_lam:
@@ -237,9 +237,21 @@ for l in gs_lam:
         for k in gs_k:
             experiments.append({"lam":l, "alpha":a, "k":k})
 
+#experiment counter for logging purposes
+total_experiments = len(experiments)
+exp_counter = 1
+
+#params = {"lam":100, "alpha":0.05, "k": 4}
+# Initializations
+file = 'tour' + str(amountOfVertices)
+#student = r0123456(params)
+#student.optimize(file + '.csv')
+
 for e in experiments:
     student = r0123456(e)
     student.optimize(file + '.csv', optimums["tour29"])
+
+    exp_counter += 1
 
 # Parameter suggestions:
 #   PMX length of subset of one of the parents

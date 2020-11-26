@@ -3,94 +3,133 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-file = 'tour29'
+file = 'tour194'
 
-amountOfiterations = 3000
-stopIteratingAfter = 500
-k_elimination = 5
-gs_lam = [500]
-gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
-gs_k = [1, 2, 3, 4, 5, 6, 10]
+show_iteration_plots = True
+show_heatmap_plot = False
 
-gs_alpha = [0.02, 0.03, 0.04, 0.06, 0.8]
-gs_k = [3, 4, 5]
-
-show_iteration_plots = False
-show_heatmap_plot = True
-
+filename_blueprint = "grid_search_results/" + file + '/' + "r0123456" + 'iter={}_stopcrit{}_lambda={}_alpha={}_k={}_' + file + '.csv'
 
 # Iteration plots
-alpha_experiments = []
-alpha_experiment_k = 4
-for l in gs_lam:
-    for a in gs_alpha:
-        alpha_experiments.append({"lam":l, "alpha":a, "k":alpha_experiment_k})
-
-k_experiments = []
-k_experiment_alpha = 0.05
-for l in gs_lam:
-    for k in gs_k:
-        k_experiments.append({"lam":l, "alpha":k_experiment_alpha, "k":k})
-
-filename_blueprint = "grid_search_results/r0123456" + 'iter={}_stopcrit{}_lambda={}_alpha={}_k={}_' + file + '.csv'
-
 if show_iteration_plots:
+    #amountOfiterations = 3000
+    #stopIteratingAfter = 500
+    #k_elimination = 5
+    #gs_lam = [500]
+    #gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
+    #gs_k = [1, 2, 3, 4, 5, 6, 10]
+
     amountOfiterations = 3000
-    stopIteratingAfter = 500
+    stopIteratingAfter = 300
     k_elimination = 5
-    gs_lam = [500]
-    gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
-    gs_k = [1, 2, 3, 4, 5, 6, 10]
-    for e in alpha_experiments:
-        lam = e["lam"]
-        alpha = e["alpha"]
-        k = e["k"]
-        filename = filename_blueprint.format(str(amountOfiterations), str(stopIteratingAfter), str(lam), str(alpha), str(k))
-        x= []
-        y= []
-        file_length = 0
-        with open(filename,'r') as csvfile:
-            plots = csv.reader(csvfile, delimiter=',')
-            count = 0
-            for row in plots:
-                if count < 2:
-                    count += 1
-                    continue
-                count += 1
-                #print(row[0])
-                x.append(float(row[0]))
-                y.append(float(row[2]))
-        plt.plot(x,y, label='alpha='+str(alpha))
-        plt.xlabel('iterations')
-        plt.ylabel('mean fitness')
-        plt.title(file + ': Mean fitness vs iterations\nlambda={} k={}'.format(lam, k))
-        plt.legend()
+    gs_lam = [50, 75, 100, 200, 500, 600]
+    gs_alpha = [0.04]
+    gs_k = [4]
 
-    plt.figure()
+    plot_alpha_experiments = False
+    alpha_experiments = []
+    alpha_experiment_k = 4
+    for l in gs_lam:
+        for a in gs_alpha:
+            alpha_experiments.append({"lam": l, "alpha": a, "k": alpha_experiment_k})
 
-    for e in k_experiments:
-        lam = e["lam"]
-        alpha = e["alpha"]
-        k = e["k"]
-        filename = filename_blueprint.format(str(amountOfiterations), str(stopIteratingAfter), str(lam), str(alpha), str(k))
-        x= []
-        y= []
-        with open(filename,'r') as csvfile:
-            plots = csv.reader(csvfile, delimiter=',')
-            count = 0
-            for row in plots:
-                if count < 2:
+    plot_k_experiments = False
+    k_experiments = []
+    k_experiment_alpha = 0.05
+    for l in gs_lam:
+        for k in gs_k:
+            k_experiments.append({"lam": l, "alpha": k_experiment_alpha, "k": k})
+
+    plot_lam_experiments = True
+    lam_experiments = []
+    lam_experiments_alpha = 0.04
+    lam_experiments_k = 4
+    for l in gs_lam:
+        lam_experiments.append({"lam": l, "alpha": lam_experiments_alpha, "k": lam_experiments_k})
+
+
+    if plot_lam_experiments:
+        for e in lam_experiments:
+            lam = e["lam"]
+            alpha = e["alpha"]
+            k = e["k"]
+            filename = filename_blueprint.format(str(amountOfiterations), str(stopIteratingAfter), str(lam), str(alpha),
+                                                 str(k))
+            x = []
+            y = []
+            file_length = 0
+            with open(filename, 'r') as csvfile:
+                plots = csv.reader(csvfile, delimiter=',')
+                count = 0
+                for row in plots:
+                    if count < 2:
+                        count += 1
+                        continue
                     count += 1
-                    continue
-                count += 1
-                #print(row[0])
-                x.append(float(row[0]))
-                y.append(float(row[2]))
-        plt.plot(x,y, label='k='+str(k))
-        plt.xlabel('iterations')
-        plt.ylabel('mean fitness')
-        plt.title(file + ': Mean fitness vs iterations\nlambda={} alpha={}'.format(lam, alpha))
-        plt.legend()
+                    # print(row[0])
+                    x.append(float(row[0]))
+                    y.append(float(row[2]))
+            print("{} {}".format(lam, y[-1]))
+            plt.plot(x, y, label='lambda=' + str(lam))
+            plt.xlabel('iterations')
+            plt.ylabel('mean fitness')
+            plt.title(file + ': Mean fitness vs iterations\nalpha={} k={}'.format(alpha, k))
+            plt.legend()
+
+        #plt.figure()
+
+    if plot_k_experiments:
+        for e in alpha_experiments:
+            lam = e["lam"]
+            alpha = e["alpha"]
+            k = e["k"]
+            filename = filename_blueprint.format(str(amountOfiterations), str(stopIteratingAfter), str(lam), str(alpha), str(k))
+            x= []
+            y= []
+            file_length = 0
+            with open(filename,'r') as csvfile:
+                plots = csv.reader(csvfile, delimiter=',')
+                count = 0
+                for row in plots:
+                    if count < 2:
+                        count += 1
+                        continue
+                    count += 1
+                    #print(row[0])
+                    x.append(float(row[0]))
+                    y.append(float(row[2]))
+            plt.plot(x,y, label='alpha='+str(alpha))
+            plt.xlabel('iterations')
+            plt.ylabel('mean fitness')
+            plt.title(file + ': Mean fitness vs iterations\nlambda={} k={}'.format(lam, k))
+            plt.legend()
+
+        plt.figure()
+
+    if plot_k_experiments:
+        for e in k_experiments:
+            lam = e["lam"]
+            alpha = e["alpha"]
+            k = e["k"]
+            filename = filename_blueprint.format(str(amountOfiterations), str(stopIteratingAfter), str(lam), str(alpha), str(k))
+            x= []
+            y= []
+            with open(filename,'r') as csvfile:
+                plots = csv.reader(csvfile, delimiter=',')
+                count = 0
+                for row in plots:
+                    if count < 2:
+                        count += 1
+                        continue
+                    count += 1
+                    #print(row[0])
+                    x.append(float(row[0]))
+                    y.append(float(row[2]))
+            plt.plot(x,y, label='k='+str(k))
+            plt.xlabel('iterations')
+            plt.ylabel('mean fitness')
+            plt.title(file + ': Mean fitness vs iterations\nlambda={} alpha={}'.format(lam, alpha))
+            plt.legend()
 
     plt.show()
 
