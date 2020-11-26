@@ -28,8 +28,10 @@ class r0123456:
         # Your code here.
         individuals = self.initialize()
 
-        #testind1 = individuals[0]
-        #testind2 = individuals[1]
+        testind1 = individuals[0]
+        testind2 = individuals[1]
+
+        #self.pathLegit(testind1)
         #print("parent1: ", testind1.perm)
         #print("parent2: ", testind2.perm)
         #self.recombination(testind1, testind2)
@@ -173,6 +175,19 @@ class r0123456:
         return retour
 
 
+    # return True if path has no duplicates and contains all possible nodes
+    # return False otherwise
+    def pathLegit(self, path):
+
+        nb_nodes = len(self.distanceMatrix[0]) 
+        nodes = [vert for vert in range(nb_nodes)] # ordered list of all possible nodes
+        # np.unique(path.perm) takes the path, removes deplicates and order the list
+
+        # compare 2 ordered list (must be exactly the same)
+        if(np.array_equal(np.array(nodes),np.unique(path.perm))):
+            return True
+        else:
+            return False
 
 
     # Helperfunctions
