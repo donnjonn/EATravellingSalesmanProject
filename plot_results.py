@@ -5,8 +5,8 @@ import seaborn as sns
 
 file = 'tour29'
 
-show_iteration_plots = True
-show_heatmap_plot = False
+show_iteration_plots = False
+show_heatmap_plot = True
 
 filename_blueprint = "grid_search_results/" + file + '/' + "r0123456" + 'iter={}_stopcrit{}_lambda={}_alpha={}_k={}_' + file + '.csv'
 
@@ -152,12 +152,20 @@ if show_iteration_plots:
 
 
 if show_heatmap_plot:
-    amountOfiterations = 3000
-    stopIteratingAfter = 500
-    k_elimination = 5
-    gs_lam = [500]
-    gs_alpha = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.075, 0.08, 0.1, 0.25, 0.5]
-    gs_k = [1, 2, 3, 4, 5, 6, 10]
+    if file=='tour29':
+        amountOfiterations = 3000
+        stopIteratingAfter = 500
+        k_elimination = 5
+        gs_lam = [500]
+        gs_alpha = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.075, 0.08, 0.1, 0.25, 0.5]
+        gs_k = [1, 2, 3, 4, 5, 6, 10]
+    if file=='tour194':
+        amountOfiterations = 4000
+        stopIteratingAfter = 300
+        k_elimination = 5
+        gs_lam = [75]
+        gs_alpha = [0.02, 0.03, 0.04, 0.05, 0.1]
+        gs_k = [2, 3, 4, 5]
 
     # Grid search heatmap
     experiments = []
