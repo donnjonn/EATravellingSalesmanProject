@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-file = 'tour194'
+file = 'tour29'
 
-show_iteration_plots = True
+show_iteration_plots = False
 show_heatmap_plot = True
 
 filename_blueprint = "grid_search_results/" + file + '/' + "r0123456" + 'iter={}_stopcrit{}_lambda={}_alpha={}_k={}_' + file + '.csv'
@@ -240,6 +240,6 @@ if show_heatmap_plot:
 
     plt.xlabel('alpha')
     plt.ylabel('k')
-    plt.title(file + ': Heatmap of Mean fitness for different alpha and k\nBest value for alpha={} and k={}'.format(best_params['alpha'], best_params['k']))
+    plt.title(file + ': Heatmap of Mean fitness for different alpha and k with lambda={}\nBest value for alpha={} and k={}'.format(gs_lam[0], best_params['alpha'], best_params['k']))
 
     plt.show()
