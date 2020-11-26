@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-file = 'tour194'
+file = 'tour29'
 
 show_iteration_plots = True
 show_heatmap_plot = False
@@ -12,35 +12,39 @@ filename_blueprint = "grid_search_results/" + file + '/' + "r0123456" + 'iter={}
 
 # Iteration plots
 if show_iteration_plots:
-    #amountOfiterations = 3000
-    #stopIteratingAfter = 500
-    #k_elimination = 5
-    #gs_lam = [500]
-    #gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
-    #gs_k = [1, 2, 3, 4, 5, 6, 10]
+    if file == 'tour29':
+        amountOfiterations = 3000
+        stopIteratingAfter = 500
+        k_elimination = 5
+        gs_lam = [500]
+        gs_alpha = [0.01, 0.03, 0.04, 0.05, 0.075, 0.08, 0.1, 0.25, 0.5]
+        gs_k = [1, 2, 3, 4, 5, 6, 10]
+    if file == 'tour194':
+        amountOfiterations = 4000
+        stopIteratingAfter = 300
+        k_elimination = 5
+        gs_lam = [50, 75, 100, 200, 500, 600]
+        gs_alpha = [0.04]
+        gs_k = [4]
 
-    amountOfiterations = 4000
-    stopIteratingAfter = 300
-    k_elimination = 5
-    gs_lam = [50, 75, 100, 200, 500, 600]
-    gs_alpha = [0.04]
-    gs_k = [4]
+    plot_alpha_experiments = True
+    plot_k_experiments = True
+    plot_lam_experiments = False
 
-    plot_alpha_experiments = False
     alpha_experiments = []
-    alpha_experiment_k = 4
+    alpha_experiment_k = 3
     for l in gs_lam:
         for a in gs_alpha:
             alpha_experiments.append({"lam": l, "alpha": a, "k": alpha_experiment_k})
 
-    plot_k_experiments = False
+
     k_experiments = []
     k_experiment_alpha = 0.05
     for l in gs_lam:
         for k in gs_k:
             k_experiments.append({"lam": l, "alpha": k_experiment_alpha, "k": k})
 
-    plot_lam_experiments = True
+
     lam_experiments = []
     lam_experiments_alpha = 0.04
     lam_experiments_k = 4
@@ -79,9 +83,9 @@ if show_iteration_plots:
             except:
                 print("File not found, skipping...")
 
-        #plt.figure()
+        plt.figure()
 
-    if plot_k_experiments:
+    if plot_alpha_experiments:
         for e in alpha_experiments:
             lam = e["lam"]
             alpha = e["alpha"]
@@ -102,6 +106,7 @@ if show_iteration_plots:
                         #print(row[0])
                         x.append(float(row[0]))
                         y.append(float(row[2]))
+                print("{} {}".format(k, y[-1]))
                 plt.plot(x,y, label='alpha='+str(alpha))
                 plt.xlabel('iterations')
                 plt.ylabel('mean fitness')
@@ -132,6 +137,7 @@ if show_iteration_plots:
                         #print(row[0])
                         x.append(float(row[0]))
                         y.append(float(row[2]))
+                print("{} {}".format(alpha, y[-1]))
                 plt.plot(x,y, label='k='+str(k))
                 plt.xlabel('iterations')
                 plt.ylabel('mean fitness')
