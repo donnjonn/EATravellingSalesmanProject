@@ -213,8 +213,11 @@ amountOfiterations = 3000
 stopIteratingAfter = 500
 k_elimination = 5
 gs_lam = [500]
-gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25]
-gs_k = [1, 2, 3, 4, 5, 6, 10]
+#gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
+#gs_k = [1, 2, 3, 4, 5, 6, 10]
+
+gs_alpha = [0.02, 0.03, 0.04, 0.06, 0.08]
+gs_k = [2]
 
 experiments = []
 for l in gs_lam:
