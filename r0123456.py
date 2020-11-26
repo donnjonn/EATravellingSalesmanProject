@@ -225,8 +225,8 @@ gs_lam = [75]
 #gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
 #gs_k = [1, 2, 3, 4, 5, 6, 10]
 
-gs_alpha = [0.02, 0.03, 0.04, 0.05, 0.1]
-gs_k = [2, 3, 4, 5]
+gs_alpha = [0.6, 0.7]
+gs_k = [1]
 
 
 
@@ -236,6 +236,15 @@ for l in gs_lam:
     for a in gs_alpha:
         for k in gs_k:
             experiments.append({"lam":l, "alpha":a, "k":k})
+
+#gs_alpha = [0.2, 0.3]
+#gs_k = [5]
+
+#for l in gs_lam:
+#    for a in gs_alpha:
+#        for k in gs_k:
+#            experiments.append({"lam":l, "alpha":a, "k":k})
+
 
 #experiment counter for logging purposes
 total_experiments = len(experiments)
