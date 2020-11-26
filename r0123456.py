@@ -39,7 +39,7 @@ class r0123456:
         bestObjective = 0
         meanObjective = 0
         i = 0
-        
+
         # "or" part explanation: 
         #       True IF optimum_reference is not given (as an argument of optimize) 
         #            ELSE (if optimum_reference given), we compare this value with the current meanObjective (and return True if meanObjective <= optimum_reference)
@@ -165,18 +165,11 @@ class r0123456:
 
 
     def elimination_select_half_best(self, parents, offsprings, distanceMatrix):
-
         totalPop = parents + offsprings
-
         dtype = [('index', int), ('length', float)]
-
         fitnesses = np.array([ (i , self.length(ind, distanceMatrix)) for i, ind in enumerate(totalPop) ], dtype=dtype)
-
         sortedd = np.sort(fitnesses, order='length')
-        
-
         retour = [totalPop[ele[0]] for i, ele in enumerate(sortedd) if i<len(parents)]
-
         return retour
 
 
@@ -216,8 +209,6 @@ amountOfVertices = 29
 #alpha = 0.2
 #k = 5
 
-optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300}
-
 
 
 
@@ -229,6 +220,7 @@ file = 'tour29'
 
 #test_experiments = [{"lam":100, "alpha":0.01, "k": 1},{"lam":100, "alpha":0.01, "k": 2}]
 
+optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300}
 amountOfiterations = 3000
 stopIteratingAfter = 500
 k_elimination = 5
