@@ -19,7 +19,7 @@ class r0123456:
         self.stopIter = 0
 
     # The evolutionary algorithm's main loop
-    def optimize(self, filename):
+    def optimize(self, filename, optimum=None):
         # Read distance matrix from file.		
         file = open(filename)
         self.distanceMatrix = np.loadtxt(file, delimiter=",")
@@ -39,7 +39,11 @@ class r0123456:
         bestObjective = 0
         meanObjective = 0
         i = 0
-        while(i < amountOfiterations and self.stopIter <= stopIteratingAfter):
+        
+        # "or" part explanation: 
+        #       True IF optimum_reference is not given (as an argument of optimize) 
+        #            ELSE (if optimum_reference given), we compare this value with the current meanObjective (and return True if meanObjective <= optimum_reference)
+        while( i < amountOfiterations and (self.stopIter <= stopIteratingAfter or ( True if optimum == None else (False if int(meanObjective) <= int(optimum) else True)) )):
             index = 0
             # calc ifitnesses
             fitnesses = []
@@ -142,6 +146,7 @@ class r0123456:
         for i in range(len(offspring.perm)):
             if offspring.perm[i] is None:
                 offspring.perm[i] = p2.perm[i]
+
         return offspring
 
     def selection(self, individuals):
@@ -211,7 +216,7 @@ amountOfVertices = 29
 #alpha = 0.2
 #k = 5
 
-
+optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300}
 
 
 
@@ -242,7 +247,7 @@ for l in gs_lam:
 
 for e in experiments:
     student = r0123456(e)
-    student.optimize(file + '.csv')
+    student.optimize(file + '.csv', optimums["tour29"])
 
 # Parameter suggestions:
 #   PMX length of subset of one of the parents
