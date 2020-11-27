@@ -43,7 +43,7 @@ class r0123456:
         # "or" part explanation: 
         #       True IF optimum_reference is not given (as an argument of optimize) 
         #            ELSE (if optimum_reference given), we compare this value with the current meanObjective (and return True if meanObjective <= optimum_reference)
-        while( i < amountOfiterations and (self.stopIter <= stopIteratingAfter or ( True if optimum == None else (False if int(meanObjective) <= int(optimum) else True)) )):
+        while( (i < amountOfiterations and self.stopIter <= stopIteratingAfter) ):
             index = 0
             # calc fitnesses
             fitnesses = np.zeros(shape=(self.lam))
@@ -202,7 +202,7 @@ class Individual:
 
 # Executed code starts here
 # Parameters
-amountOfVertices = 194
+amountOfVertices = 29
 #lam = 100
 # Probability to mutate
 #alpha = 0.2
@@ -212,24 +212,26 @@ amountOfVertices = 194
 
 
 
-
+#gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
+#gs_k = [1, 2, 3, 4, 5, 6, 10]
 
 
 #test_experiments = [{"lam":100, "alpha":0.01, "k": 1},{"lam":100, "alpha":0.01, "k": 2}]
 
 optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300}
 amountOfiterations = 4000
-stopIteratingAfter = 300
+stopIteratingAfter = 500
 k_elimination = 5
-gs_lam = [75]
-#gs_alpha = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5]
-#gs_k = [1, 2, 3, 4, 5, 6, 10]
 
-gs_alpha = [0.6, 0.7]
-gs_k = [1]
+# 100 tour29 experiments
+#gs_lam = [100, 200, 300, 500]
+#gs_alpha = [0.1, 0.2, 0.3, 0.4]
+#gs_k = [1, 2, 3, 4, 5]
 
-
-
+# 0.04 graph
+gs_lam = [50, 75, 100, 200, 300, 500, 600]
+gs_alpha = [0.04]
+gs_k = [4]
 
 experiments = []
 for l in gs_lam:

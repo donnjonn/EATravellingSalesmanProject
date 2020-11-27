@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-file = 'tour29'
+file = 'tour929'
 
 show_iteration_plots = False
 show_heatmap_plot = True
@@ -166,6 +166,13 @@ if show_heatmap_plot:
         gs_lam = [75]
         gs_alpha = [0.02, 0.03, 0.04, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
         gs_k = [1, 2, 3, 4, 5]
+    if file=='tour929':
+        amountOfiterations = 4000
+        stopIteratingAfter = 300
+        k_elimination = 5
+        gs_lam = [50]
+        gs_alpha = [0.1, 0.4, 0.5, 0.6, 0.8]
+        gs_k = [1, 3, 5]
 
     # Grid search heatmap
     experiments = []
