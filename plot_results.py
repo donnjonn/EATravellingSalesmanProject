@@ -5,8 +5,8 @@ import seaborn as sns
 
 file = 'tour194'
 
-show_iteration_plots = True
-show_heatmap_plot = False
+show_iteration_plots = False
+show_heatmap_plot = True
 
 filename_blueprint = "grid_search_results/" + file + '/' + "r0123456" + 'iter={}_stopcrit{}_lambda={}_alpha={}_k={}_' + file + '.csv'
 

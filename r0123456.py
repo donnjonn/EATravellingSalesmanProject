@@ -228,10 +228,10 @@ k_elimination = 5
 #gs_alpha = [0.1, 0.2, 0.3, 0.4]
 #gs_k = [1, 2, 3, 4, 5]
 
-# 0.04 graph
-gs_lam = [50, 75, 100, 200, 500, 600]
-gs_alpha = [0.04]
-gs_k = [4]
+
+gs_lam = [75]
+gs_alpha = [0.02, 0.03, 0.04]
+gs_k = [1]
 
 experiments = []
 for l in gs_lam:
@@ -239,7 +239,7 @@ for l in gs_lam:
         for k in gs_k:
             experiments.append({"lam":l, "alpha":a, "k":k})
 
-#gs_alpha = [0.2, 0.3]
+#gs_alpha = [0.03]
 #gs_k = [5]
 
 #for l in gs_lam:
