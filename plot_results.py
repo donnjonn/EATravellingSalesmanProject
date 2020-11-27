@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-file = 'tour929'
+file = 'tour194'
 
-show_iteration_plots = False
-show_heatmap_plot = True
+show_iteration_plots = True
+show_heatmap_plot = False
 
 filename_blueprint = "grid_search_results/" + file + '/' + "r0123456" + 'iter={}_stopcrit{}_lambda={}_alpha={}_k={}_' + file + '.csv'
 
@@ -23,13 +23,13 @@ if show_iteration_plots:
         amountOfiterations = 4000
         stopIteratingAfter = 300
         k_elimination = 5
-        gs_lam = [75]
-        gs_alpha = [0.02, 0.03, 0.04, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
-        gs_k = [1, 2, 3, 4, 5]
+        gs_lam = [50, 75, 100, 200, 500, 600]
+        gs_alpha = [0.04]
+        gs_k = [4]
 
-    plot_alpha_experiments = True
-    plot_k_experiments = True
-    plot_lam_experiments = False
+    plot_alpha_experiments = False
+    plot_k_experiments = False
+    plot_lam_experiments = True
 
     alpha_experiments = []
     alpha_experiment_k = 2

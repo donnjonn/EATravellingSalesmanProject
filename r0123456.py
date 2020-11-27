@@ -202,7 +202,7 @@ class Individual:
 
 # Executed code starts here
 # Parameters
-amountOfVertices = 29
+amountOfVertices = 194
 #lam = 100
 # Probability to mutate
 #alpha = 0.2
@@ -220,7 +220,7 @@ amountOfVertices = 29
 
 optimums = { "tour29": 27200, "tour100": 7350, "tour194": 9000, "tour929": 95300}
 amountOfiterations = 4000
-stopIteratingAfter = 500
+stopIteratingAfter = 300
 k_elimination = 5
 
 # 100 tour29 experiments
@@ -229,7 +229,7 @@ k_elimination = 5
 #gs_k = [1, 2, 3, 4, 5]
 
 # 0.04 graph
-gs_lam = [50, 75, 100, 200, 300, 500, 600]
+gs_lam = [50, 75, 100, 200, 500, 600]
 gs_alpha = [0.04]
 gs_k = [4]
 
